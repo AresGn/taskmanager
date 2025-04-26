@@ -122,8 +122,10 @@ class SendReminderEmails extends Command
     {
         $now = Carbon::now();
         $thirtyMinutesAgo = Carbon::now()->subMinutes(30);
+        $thirtyFiveMinutesAgo = Carbon::now()->subMinutes(35);
         
         $this->info("Recherche des tâches en retard depuis 30 minutes");
+        $this->info("Période de recherche: de " . $thirtyFiveMinutesAgo->format('Y-m-d H:i:s') . " à " . $thirtyMinutesAgo->format('Y-m-d H:i:s'));
         
         // Get tasks that were due 30 minutes ago and are not completed
         $overdueTasks = Task::where('status', '!=', 'completed')
@@ -139,8 +141,8 @@ class SendReminderEmails extends Command
                 
                 $this->info("Tâche: {$task->title} - Date d'échéance: " . $dueDate->format('Y-m-d H:i:s'));
                 
-                // Check if the task was due between 30 and 35 minutes ago
-                if ($dueDate->isBetween($thirtyMinutesAgo->copy()->subMinutes(5), $thirtyMinutesAgo)) {
+                // Vérifier si la tâche était due entre 30 et 35 minutes dans le passé
+                if ($dueDate->between($thirtyFiveMinutesAgo, $thirtyMinutesAgo)) {
                     $this->info("Tâche en retard détectée: {$task->title}");
                     
                     try {
