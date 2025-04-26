@@ -8,6 +8,8 @@
 .env
 .env.backup
 .env.production
+.env.*
+!.env.example
 .phpactor.json
 .phpunit.result.cache
 Homestead.json
@@ -18,3 +20,7 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+
+# Fichiers qui pourraient contenir des identifiants
+*.log
+config/secrets.php
