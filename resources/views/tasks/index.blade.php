@@ -1,6 +1,10 @@
 @extends('layouts.app')
 @section('title')
-    {{ $project->name }} - Tasks
+    @if(isset($project))
+        {{ $project->name }} - Tasks
+    @else
+        My Tasks
+    @endif
 @endsection
 @section('content')
     <style>
@@ -28,7 +32,13 @@
     </style>
     <div class="container">
         <div class="bg-white align-items-center mb-4 shadow-sm p-3 rounded">
-            <h2 class="text-center">{{ $project->name }} - Tasks</h2>
+            <h2 class="text-center">
+                @if(isset($project))
+                    {{ $project->name }} - Tasks
+                @else
+                    My Tasks
+                @endif
+            </h2>
         </div>
 
         @if (session('success'))
@@ -42,8 +52,10 @@
                 <div class="kanban-column">
                     <div class="d-flex justify-content-between bg-primary text-white shadow-sm align-items-center px-3 py-2 rounded-top">
                         <h4 class="text-white fw-bolder m-0">To Do</h4>
+                        @if(isset($project))
                         <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#createTaskModal"
                             data-status="to_do" style="padding-top: 0.5rem; padding-bottom: 0.5rem;">+</button>
+                        @endif
                     </div>
                     
                     <div class="kanban-list" id="to_do">
@@ -68,9 +80,11 @@
                 <div class="kanban-column">
                     <div class="d-flex justify-content-between shadow-sm align-items-center bg-warning px-3 py-2 rounded-top">
                         <h4 class="text-white fw-bolder m-0">In Progress</h4>
+                        @if(isset($project))
                         <button type="button" class="btn btn-light" data-bs-toggle="modal"
                             data-bs-target="#createTaskModal" data-status="in_progress"
                             style="padding-top: 0.5rem; padding-bottom: 0.5rem;">+</button>
+                        @endif
                     </div>
                     
                     <div class="kanban-list" id="in_progress">
@@ -91,8 +105,10 @@
                 <div class="kanban-column">
                     <div class="d-flex justify-content-between shadow-sm align-items-center bg-success px-3 py-2 rounded-top">
                         <h4 class="text-white fw-bolder m-0">Completed</h4>
+                        @if(isset($project))
                         <button type="button" class="btn btn-light" data-bs-toggle="modal"
                             data-bs-target="#createTaskModal" data-status="completed" style="padding-top: 0.5rem; padding-bottom: 0.5rem;">+</button>
+                        @endif
                     </div>
                     <div class="kanban-list" id="completed">
                         @foreach ($tasks['completed'] ?? [] as $task)
@@ -109,6 +125,7 @@
             </div>
         </div>
 
+        @if(isset($project))
         <!-- Create Task Modal -->
         <div class="modal fade" id="createTaskModal" tabindex="-1" aria-labelledby="createTaskModalLabel"
             aria-hidden="true">
@@ -176,6 +193,7 @@
                 </div>
             </div>
         </div>
+        @endif
     </div>
 
     <script>
@@ -183,13 +201,15 @@
             const kanbanItems = document.querySelectorAll('.kanban-item');
             const kanbanLists = document.querySelectorAll('.kanban-list');
             const createTaskModal = document.getElementById('createTaskModal');
-            const taskStatusInput = document.getElementById('task_status');
+            if (createTaskModal) {
+                const taskStatusInput = document.getElementById('task_status');
 
-            createTaskModal.addEventListener('show.bs.modal', function(event) {
-                var button = event.relatedTarget; 
-                var status = button.getAttribute('data-status'); 
-                taskStatusInput.value = status;
-            });
+                createTaskModal.addEventListener('show.bs.modal', function(event) {
+                    var button = event.relatedTarget; 
+                    var status = button.getAttribute('data-status'); 
+                    taskStatusInput.value = status;
+                });
+            }
 
             kanbanItems.forEach(item => {
                 item.addEventListener('dragstart', handleDragStart);

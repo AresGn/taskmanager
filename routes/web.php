@@ -29,6 +29,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('projects/{project}/tasks', [TaskController::class, 'index'])->name('projects.tasks.index');
     Route::post('projects/{project}/tasks', [TaskController::class, 'store'])->name('projects.tasks.store');
 
+    Route::get('tasks', [TaskController::class, 'index'])->name('tasks.index');
     Route::get('tasks/{task}', [TaskController::class, 'show'])->name('tasks.show');
     Route::put('tasks/{task}', [TaskController::class, 'update'])->name('tasks.update');
     Route::post('tasks/{task}/update-status', [TaskController::class, 'updateStatus']);

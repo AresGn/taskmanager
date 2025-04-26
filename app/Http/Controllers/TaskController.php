@@ -9,11 +9,19 @@ use Carbon\Carbon;
 
 class TaskController extends Controller
 {
-    public function index(Project $project)
+    public function index(Project $project = null)
     {
-        $tasks = $project->tasks()->get()->groupBy('status');
-        $users = $project->users()->get();  
-        return view('tasks.index', compact('project', 'tasks', 'users'));
+        // Si un projet est fourni, affiche les tâches de ce projet
+        if ($project) {
+            $tasks = $project->tasks()->get()->groupBy('status');
+            $users = $project->users()->get();  
+            return view('tasks.index', compact('project', 'tasks', 'users'));
+        }
+        
+        // Si aucun projet n'est fourni, affiche toutes les tâches de l'utilisateur actuel
+        $user = Auth::user();
+        $tasks = $user->tasks()->get()->groupBy('status');
+        return view('tasks.index', compact('tasks'));
     }
 
     public function store(Request $request, Project $project)
