@@ -1,6 +1,7 @@
 <?php
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -16,6 +17,11 @@ class Task extends Model
         'due_date',
         'priority',
         'status',
+        'completed_at',
+    ];
+
+    protected $casts = [
+        'completed_at' => 'datetime',
     ];
 
     public function user()
@@ -45,5 +51,31 @@ class Task extends Model
     public function checklistItems()
     {
         return $this->hasMany(ChecklistItem::class);
+    }
+
+    // Accesseur pour convertir la date d'échéance en objet Carbon
+    public function getDueDateAttribute($value)
+    {
+        return $value ? Carbon::parse($value) : null;
+    }
+
+    // Vérifie si la tâche est en retard
+    public function getIsOverdueAttribute()
+    {
+        if (!$this->due_date || $this->status === 'completed') {
+            return false;
+        }
+        
+        return $this->due_date->isPast();
+    }
+    
+    // Vérifie si la tâche est imminente (prévue dans les 24 heures)
+    public function getIsUpcomingAttribute()
+    {
+        if (!$this->due_date || $this->status === 'completed') {
+            return false;
+        }
+        
+        return $this->due_date->isFuture() && $this->due_date->diffInHours(now()) <= 24;
     }
 }

@@ -11,20 +11,40 @@ class RoutineController extends Controller
     public function index()
     {
         $today = Carbon::today();
+        $isWorkday = !in_array($today->dayOfWeek, [0, 6]); // 0 = Sunday, 6 = Saturday
+        
         $upcomingDailyRoutines = Auth::user()->routines()
             ->where('frequency', 'daily')
+            ->where(function($query) use ($isWorkday) {
+                // If it's a weekend, only show routines that are not workdays only
+                if (!$isWorkday) {
+                    $query->where('workdays_only', false);
+                }
+            })
             ->whereJsonContains('days', strtolower($today->format('l')))
             ->take(2)
             ->get();
 
         $upcomingWeeklyRoutines = Auth::user()->routines()
             ->where('frequency', 'weekly')
+            ->where(function($query) use ($isWorkday) {
+                // If it's a weekend, only show routines that are not workdays only
+                if (!$isWorkday) {
+                    $query->where('workdays_only', false);
+                }
+            })
             ->whereJsonContains('weeks', $today->weekOfYear)
             ->take(2)
             ->get();
 
         $upcomingMonthlyRoutines = Auth::user()->routines()
             ->where('frequency', 'monthly')
+            ->where(function($query) use ($isWorkday) {
+                // If it's a weekend, only show routines that are not workdays only
+                if (!$isWorkday) {
+                    $query->where('workdays_only', false);
+                }
+            })
             ->whereJsonContains('months', $today->month)
             ->take(2)
             ->get();
@@ -48,6 +68,7 @@ class RoutineController extends Controller
             'months' => 'nullable|array',
             'start_time' => 'required',
             'end_time' => 'required',
+            'workdays_only' => 'boolean',
         ]);
 
         $routineData = $request->all();
@@ -60,6 +81,9 @@ class RoutineController extends Controller
         if ($request->has('months')) {
             $routineData['months'] = json_encode($request->months);
         }
+        
+        // Set workdays_only default if not provided
+        $routineData['workdays_only'] = $request->has('workdays_only') ? (bool)$request->workdays_only : false;
 
         Auth::user()->routines()->create($routineData);
 
@@ -82,6 +106,7 @@ class RoutineController extends Controller
             'months' => 'nullable|array',
             'start_time' => 'required',
             'end_time' => 'required',
+            'workdays_only' => 'boolean',
         ]);
 
         $routineData = $request->all();
@@ -94,6 +119,9 @@ class RoutineController extends Controller
         if ($request->has('months')) {
             $routineData['months'] = json_encode($request->months);
         }
+        
+        // Set workdays_only default if not provided
+        $routineData['workdays_only'] = $request->has('workdays_only') ? (bool)$request->workdays_only : false;
 
         $routine->update($routineData);
 

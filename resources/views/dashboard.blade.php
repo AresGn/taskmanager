@@ -97,9 +97,13 @@
                         <h5 class="card-title">Upcoming Reminders</h5>
                         <ul class="list-group flex-grow-1">
                             @foreach($upcomingReminders as $reminder)
-                                <li class="list-group-item d-flex justify-content-between align-items-center {{ $reminder->date->isToday() ? 'bg-warning' : ($reminder->date->isPast() ? 'bg-danger' : 'bg-success') }}">
+                                @php
+                                    $reminderDate = \Carbon\Carbon::parse($reminder->date);
+                                    $reminderTime = $reminder->time;
+                                @endphp
+                                <li class="list-group-item d-flex justify-content-between align-items-center {{ $reminderDate->isToday() ? 'bg-warning' : ($reminderDate->isPast() ? 'bg-danger' : 'bg-success') }}">
                                     {{ $reminder->title }}
-                                    <span class="badge bg-primary rounded-pill">{{ $reminder->date->format('M d') }} {{ $reminder->time ? $reminder->time->format('H:i') : '' }}</span>
+                                    <span class="badge bg-primary rounded-pill">{{ $reminderDate->format('M d') }} {{ $reminderTime }}</span>
                                 </li>
                             @endforeach
                         </ul>

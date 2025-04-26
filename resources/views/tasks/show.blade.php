@@ -37,6 +37,10 @@
 
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                     data-bs-target="#editTaskModal"> <i class="bi bi-pencil-square"></i> </button>
+                                <button type="button" class="btn {{ $task->status == 'completed' ? 'btn-warning' : 'btn-success' }} toggle-complete" data-task-id="{{ $task->id }}">
+                                    <i class="bi {{ $task->status == 'completed' ? 'bi-x-circle' : 'bi-check-circle' }}"></i>
+                                    {{ $task->status == 'completed' ? 'Marquer comme non terminée' : 'Marquer comme terminée' }}
+                                </button>
                                 <a href="{{ route('projects.tasks.index', $task->project->id) }}" class="btn btn-secondary">
                                     <i class="bi bi-arrow-90deg-left"></i> </a>
                             </div>
@@ -386,6 +390,59 @@
                     }
                 })
                 .catch(error => console.error('Error:', error));
+        });
+
+        // Script pour la fonctionnalité de marquage des tâches
+        document.addEventListener('DOMContentLoaded', function() {
+            // Gestion du bouton pour marquer une tâche comme terminée/non terminée
+            const toggleCompleteBtn = document.querySelector('.toggle-complete');
+            if (toggleCompleteBtn) {
+                toggleCompleteBtn.addEventListener('click', function() {
+                    const taskId = this.getAttribute('data-task-id');
+                    const isCompleted = this.classList.contains('btn-warning');
+                    
+                    // Appel AJAX pour changer le statut
+                    fetch(`/tasks/${taskId}/toggle-complete`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            completed: !isCompleted
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Mettre à jour l'interface utilisateur
+                            if (isCompleted) {
+                                // Changer en non terminé
+                                this.classList.replace('btn-warning', 'btn-success');
+                                this.querySelector('i').classList.replace('bi-x-circle', 'bi-check-circle');
+                                this.innerHTML = '<i class="bi bi-check-circle"></i> Marquer comme terminée';
+                                document.querySelector('p.card-text strong:contains("Status:")').nextElementSibling.innerHTML = '<span class="badge bg-primary">To Do</span>';
+                            } else {
+                                // Changer en terminé
+                                this.classList.replace('btn-success', 'btn-warning');
+                                this.querySelector('i').classList.replace('bi-check-circle', 'bi-x-circle');
+                                this.innerHTML = '<i class="bi bi-x-circle"></i> Marquer comme non terminée';
+                                document.querySelector('p.card-text strong:contains("Status:")').nextElementSibling.innerHTML = '<span class="badge bg-success">Completed</span>';
+                            }
+                            
+                            // Recharger la page pour refléter tous les changements
+                            location.reload();
+                        } else {
+                            alert('Une erreur est survenue lors de la mise à jour du statut de la tâche.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Erreur:', error);
+                        alert('Une erreur est survenue lors de la mise à jour du statut de la tâche.');
+                    });
+                });
+            }
         });
     </script>
 @endsection

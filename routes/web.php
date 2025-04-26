@@ -1,5 +1,6 @@
 <?php
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\ChecklistItemController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\MailController;
@@ -16,6 +17,9 @@ Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('login', [LoginController::class, 'login']);
 Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 
+Route::get('register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+Route::post('register', [RegisterController::class, 'register']);
+
 Route::middleware(['auth'])->group(function () {
     Route::controller(MailController::class)->prefix('mail')->name('mail.')->group(function () {
         Route::get('/', 'index')->name('inbox');
@@ -28,6 +32,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('tasks/{task}', [TaskController::class, 'show'])->name('tasks.show');
     Route::put('tasks/{task}', [TaskController::class, 'update'])->name('tasks.update');
     Route::post('tasks/{task}/update-status', [TaskController::class, 'updateStatus']);
+    Route::post('tasks/{task}/toggle-complete', [TaskController::class, 'toggleComplete'])->name('tasks.toggle-complete');
     
     Route::resource('routines', RoutineController::class)->except(['show']);
     Route::get('routines/showAll', [RoutineController::class, 'showAll'])->name('routines.showAll');

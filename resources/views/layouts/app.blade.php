@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title> @yield('title') | Task Manager </title>
     <link rel="shortcut icon" href="{{ asset('assets/img/logo-circle.png') }}" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -171,6 +172,29 @@
                     </button>
                     <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
                         <ul class="navbar-nav">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="notificationDropdown" role="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-bell"></i>
+                                    <span class="badge rounded-pill bg-danger">
+                                        {{ Auth::user()->tasks()->where('status', '!=', 'completed')->count() }}
+                                    </span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationDropdown">
+                                    <li class="dropdown-header">Tâches non terminées</li>
+                                    @forelse (Auth::user()->tasks()->where('status', '!=', 'completed')->get() as $task)
+                                        <li>
+                                            <a class="dropdown-item" href="{{ route('tasks.show', $task->id) }}">
+                                                <span class="fw-bold">{{ Str::limit($task->title, 30) }}</span>
+                                                <br>
+                                                <small class="text-muted">Échéance: {{ $task->due_date ?: 'Non définie' }}</small>
+                                            </a>
+                                        </li>
+                                    @empty
+                                        <li><span class="dropdown-item">Aucune tâche en attente</span></li>
+                                    @endforelse
+                                </ul>
+                            </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                     data-bs-toggle="dropdown" aria-expanded="false">

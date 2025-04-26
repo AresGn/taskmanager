@@ -32,6 +32,14 @@
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="workdays_only" id="workdays_only" value="1">
+                            <label class="form-check-label" for="workdays_only">
+                                Jours ouvrables uniquement (Lundi-Vendredi)
+                            </label>
+                        </div>
+                    </div>
                     <div class="mb-3" id="days" style="display: none;">
                         <label class="form-label">Select Days</label>
                         @foreach (['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] as $day)

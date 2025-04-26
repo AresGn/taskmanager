@@ -22,6 +22,12 @@
                         <p class="card-text">{{ Str::limit($reminder->description, 150) }}</p>
                         <p class="card-text"><strong>Date:</strong> {{ $reminder->date }}</p>
                         <p class="card-text"><strong>Time:</strong> {{ $reminder->time }}</p>
+                        <p class="card-text">
+                            <strong>Statut:</strong>
+                            <span class="badge {{ isset($reminder->email_sent) && $reminder->email_sent ? 'bg-success' : 'bg-warning' }}">
+                                {{ isset($reminder->email_sent) && $reminder->email_sent ? 'Rappel envoyé' : 'Rappel en attente' }}
+                            </span>
+                        </p>
                         <div class="d-flex justify-content-between">
                             <a href="{{ route('reminders.edit', $reminder->id) }}" class="btn btn-warning"><i class="bi bi-pencil-square"></i> </a>
                             <form action="{{ route('reminders.destroy', $reminder->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this reminder?');">

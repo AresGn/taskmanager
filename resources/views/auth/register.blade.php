@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to Task Manager</title>
+    <title>Créer un compte - Task Manager</title>
     <link rel="shortcut icon" href="{{ asset('assets/img/logo-circle.png') }}" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,11 +14,11 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 100vh;
+            min-height: 100vh;
             background-color: #f8f9fa;
             font-family: 'Poppins', sans-serif;
+            padding: 20px 0;
         }
-
 
         .card-header {
             background-color: #495057;
@@ -65,31 +65,39 @@
                     <img src="{{ asset('assets/img/logo-horizontal.png') }}" class="img-fluid" alt="task manager">
                 </div>
                 <div class="card-body">
-                    <form method="POST" action="{{ route('login') }}">
+                    <h4 class="text-center mb-4">Créer un compte</h4>
+                    <form method="POST" action="{{ route('register') }}">
                         @csrf
                         <div class="mb-3">
+                            <label for="name" class="form-label">Nom complet</label>
+                            <input type="text" name="name" id="name" class="form-control" value="{{ old('name') }}" required autofocus>
+                            @error('name')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
                             <label for="email" class="form-label">Email</label>
-                            <input type="email" name="email" id="email" class="form-control" placeholder="admin@example.com" required autofocus>
+                            <input type="email" name="email" id="email" class="form-control" value="{{ old('email') }}" required>
                             @error('email')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                         <div class="mb-3">
-                            <label for="password" class="form-label">Password</label>
+                            <label for="password" class="form-label">Mot de passe</label>
                             <input type="password" name="password" id="password" class="form-control" required>
                             @error('password')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
-                        <div class="mb-3 form-check">
-                            <input type="checkbox" name="remember" id="remember" class="form-check-input">
-                            <label for="remember" class="form-check-label">Remember Me</label>
+                        <div class="mb-3">
+                            <label for="password_confirmation" class="form-label">Confirmer le mot de passe</label>
+                            <input type="password" name="password_confirmation" id="password_confirmation" class="form-control" required>
                         </div>
                         <div class="d-grid mb-4">
-                            <button type="submit" class="btn btn-primary">Login</button>
+                            <button type="submit" class="btn btn-primary">S'inscrire</button>
                         </div>
                         <div class="text-center">
-                            <p>Vous n'avez pas de compte ? <a href="{{ route('register') }}" class="text-decoration-none">Créer un compte</a></p>
+                            <p>Vous avez déjà un compte ? <a href="{{ route('login') }}" class="text-decoration-none">Se connecter</a></p>
                         </div>
                     </form>
                 </div>
@@ -104,4 +112,4 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-</html>
+</html> 

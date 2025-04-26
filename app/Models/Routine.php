@@ -18,6 +18,7 @@ class Routine extends Model
         'months',
         'start_time',
         'end_time',
+        'workdays_only',
     ];
 
     public function user()
