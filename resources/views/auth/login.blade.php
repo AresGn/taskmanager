@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to Task Manager</title>
+    <title>Bienvenue sur Gestionnaire de Tâches</title>
     <link rel="shortcut icon" href="{{ asset('assets/img/logo-circle.png') }}" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -62,7 +62,7 @@
         <div class="col-md-5">
             <div class="card border-0 shadow-sm">
                 <div class="card-header text-center p-4 fs-1">
-                    <img src="{{ asset('assets/img/logo-horizontal.png') }}" class="img-fluid" alt="task manager">
+                    <img src="{{ asset('assets/img/logo-horizontal.png') }}" class="img-fluid" alt="gestionnaire de tâches">
                 </div>
                 <div class="card-body">
                     <form method="POST" action="{{ route('login') }}">
@@ -75,7 +75,7 @@
                             @enderror
                         </div>
                         <div class="mb-3">
-                            <label for="password" class="form-label">Password</label>
+                            <label for="password" class="form-label">Mot de passe</label>
                             <input type="password" name="password" id="password" class="form-control" required>
                             @error('password')
                                 <span class="text-danger">{{ $message }}</span>
@@ -83,10 +83,10 @@
                         </div>
                         <div class="mb-3 form-check">
                             <input type="checkbox" name="remember" id="remember" class="form-check-input">
-                            <label for="remember" class="form-check-label">Remember Me</label>
+                            <label for="remember" class="form-check-label">Se souvenir de moi</label>
                         </div>
                         <div class="d-grid mb-4">
-                            <button type="submit" class="btn btn-primary">Login</button>
+                            <button type="submit" class="btn btn-primary">Se connecter</button>
                         </div>
                         <div class="text-center">
                             <p>Vous n'avez pas de compte ? <a href="{{ route('register') }}" class="text-decoration-none">Créer un compte</a></p>
@@ -95,7 +95,7 @@
                 </div>
 
                 <div class="card-footer text-center">
-                   <p>Developed by: <a class="text-decoration-none text-black" href="https://github.com/arafat-web" target="_blank">Arafat Hossain Ar</a></p>
+                   <p>&copy; {{ date('Y') }} Gestionnaire de Tâches</p>
                 </div>
             </div>
         </div>

@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title> @yield('title') | Task Manager </title>
+    <title> @yield('title') | Gestionnaire de Tâches </title>
     <link rel="shortcut icon" href="{{ asset('assets/img/logo-circle.png') }}" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -109,29 +109,29 @@
             <a href="{{ route('dashboard') }}">
                 <img style=" filter: invert(100%) brightness(200%);"
                     src="{{ asset('assets/img/logo-circle-horizontal.png') }}" class="img-fluid" width="100%"
-                    alt="task manager">
+                    alt="gestionnaire de tâches">
             </a>
         </h4>
         <ul class="nav flex-column">
             <li class="nav-item">
                 <a class="nav-link {{ request()->is('/') ? 'active' : '' }}" href="{{ route('dashboard') }}">
-                    <i class="bi bi-house-door"></i> Home
+                    <i class="bi bi-house-door"></i> Accueil
                 </a>
             </li>
             {{-- <li class="nav-item">
                 <a class="nav-link {{ request()->is('mail*') ? 'active' : '' }}" href="{{ route('mail.inbox') }}">
-                    <i class="bi bi-inbox"></i> Inbox
+                    <i class="bi bi-inbox"></i> Boîte de réception
                 </a>
             </li> --}}
             <li class="nav-item">
                 <a class="nav-link {{ request()->is('projects*') ? 'active' : '' }}"
                     href="{{ route('projects.index') }}">
-                    <i class="bi bi-folder"></i> Projects
+                    <i class="bi bi-folder"></i> Projets
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link {{ request()->is('tasks*') ? 'active' : '' }}" href="{{ route('tasks.index') }}">
-                    <i class="bi bi-check2-square"></i> Tasks
+                    <i class="bi bi-check2-square"></i> Tâches
                 </a>
             </li>
             <li class="nav-item">
@@ -148,12 +148,12 @@
             <li class="nav-item">
                 <a class="nav-link {{ request()->is('reminders*') ? 'active' : '' }}"
                     href="{{ route('reminders.index') }}">
-                    <i class="bi bi-bell"></i> Reminders
+                    <i class="bi bi-bell"></i> Rappels
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link {{ request()->is('files*') ? 'active' : '' }}" href="{{ route('files.index') }}">
-                    <i class="bi bi-file"></i> Files
+                    <i class="bi bi-file"></i> Fichiers
                 </a>
             </li>
         </ul>
@@ -201,11 +201,11 @@
                                     {{ Auth::user()->name }}
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                                    <li><a class="dropdown-item" href="#">Settings</a></li>
+                                    <li><a class="dropdown-item" href="#">Paramètres</a></li>
                                     <li>
                                         <form method="POST" action="{{ route('logout') }}" id="logout-form">
                                             @csrf
-                                            <button type="submit" class="dropdown-item">Logout</button>
+                                            <button type="submit" class="dropdown-item">Déconnexion</button>
                                         </form>
                                     </li>
                                 </ul>
@@ -220,8 +220,7 @@
         </main>
         <footer class="mt-auto py-3 text-center">
             <div class="container">
-                <span class="text-muted">&copy; {{ date('Y') }} Task Manager | Developed by <a
-                        href="https://github.com/arafat-web" target="_blank">Arafat Hossain Ar</a> </span>
+                <span class="text-muted">&copy; {{ date('Y') }} Gestionnaire de Tâches</span>
             </div>
         </footer>
     </div>
@@ -230,9 +229,9 @@
     <script>
         function updateDateTime() {
             const now = new Date();
-            const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            const dayNames = ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
             const day = dayNames[now.getDay()];
-            const date = now.toLocaleDateString(['en-US'], { day: 'numeric', month: 'long', year: 'numeric' });
+            const date = now.toLocaleDateString(['fr-FR'], { day: 'numeric', month: 'long', year: 'numeric' });
             const time = now.toLocaleTimeString();
 
             document.getElementById('currentDateTime').innerText = `${day}, ${date}  ${time}`;

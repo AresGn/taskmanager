@@ -3,8 +3,8 @@
 @section('content')
 <div class="container">
     <div class="d-flex justify-content-between align-items-center bg-white shadow-sm p-3 rounded mb-4">
-        <h2>Reminders</h2>
-        <a href="{{ route('reminders.create') }}" class="btn btn-primary">Add Reminder</a>
+        <h2>Rappels</h2>
+        <a href="{{ route('reminders.create') }}" class="btn btn-primary">Ajouter un rappel</a>
     </div>
 
     @if(session('success'))
@@ -21,7 +21,7 @@
                         <h5 class="card-title">{{ $reminder->title }}</h5>
                         <p class="card-text">{{ Str::limit($reminder->description, 150) }}</p>
                         <p class="card-text"><strong>Date:</strong> {{ $reminder->date }}</p>
-                        <p class="card-text"><strong>Time:</strong> {{ $reminder->time }}</p>
+                        <p class="card-text"><strong>Heure:</strong> {{ $reminder->time }}</p>
                         <p class="card-text">
                             <strong>Statut:</strong>
                             <span class="badge {{ isset($reminder->email_sent) && $reminder->email_sent ? 'bg-success' : 'bg-warning' }}">
@@ -30,7 +30,7 @@
                         </p>
                         <div class="d-flex justify-content-between">
                             <a href="{{ route('reminders.edit', $reminder->id) }}" class="btn btn-warning"><i class="bi bi-pencil-square"></i> </a>
-                            <form action="{{ route('reminders.destroy', $reminder->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this reminder?');">
+                            <form action="{{ route('reminders.destroy', $reminder->id) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce rappel?');">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i></button>
@@ -40,7 +40,7 @@
                 </div>
             </div>
         @empty
-            <p>No reminders found.</p>
+            <p>Aucun rappel trouvé.</p>
         @endforelse
     </div>
 </div>

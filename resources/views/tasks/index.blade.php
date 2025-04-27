@@ -1,9 +1,9 @@
 @extends('layouts.app')
 @section('title')
     @if(isset($project))
-        {{ $project->name }} - Tasks
+        {{ $project->name }} - Tâches
     @else
-        My Tasks
+        Mes Tâches
     @endif
 @endsection
 @section('content')
@@ -34,9 +34,9 @@
         <div class="bg-white align-items-center mb-4 shadow-sm p-3 rounded">
             <h2 class="text-center">
                 @if(isset($project))
-                    {{ $project->name }} - Tasks
+                    {{ $project->name }} - Tâches
                 @else
-                    My Tasks
+                    Mes Tâches
                 @endif
             </h2>
         </div>
@@ -51,7 +51,7 @@
             <div class="col-md-4">
                 <div class="kanban-column">
                     <div class="d-flex justify-content-between bg-primary text-white shadow-sm align-items-center px-3 py-2 rounded-top">
-                        <h4 class="text-white fw-bolder m-0">To Do</h4>
+                        <h4 class="text-white fw-bolder m-0">À faire</h4>
                         @if(isset($project))
                         <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#createTaskModal"
                             data-status="to_do" style="padding-top: 0.5rem; padding-bottom: 0.5rem;">+</button>
@@ -64,7 +64,7 @@
                                 <div class="card-body">
                                     <h5 class="card-title">
                                         {{ $task->title }} 
-                                        <span style="font-size: 12px;" class="badge {{ $task->priority == 'low' ? 'bg-success' : ($task->priority == 'medium' ? 'bg-warning' : 'bg-danger') }}">{{ ucfirst($task->priority) }}</span>
+                                        <span style="font-size: 12px;" class="badge {{ $task->priority == 'low' ? 'bg-success' : ($task->priority == 'medium' ? 'bg-warning' : 'bg-danger') }}">{{ $task->priority == 'low' ? 'Faible' : ($task->priority == 'medium' ? 'Moyenne' : 'Haute') }}</span>
                                     </h5>
                                     
                                     <p class="card-text">{{ $task->description }}</p>
@@ -79,7 +79,7 @@
             <div class="col-md-4">
                 <div class="kanban-column">
                     <div class="d-flex justify-content-between shadow-sm align-items-center bg-warning px-3 py-2 rounded-top">
-                        <h4 class="text-white fw-bolder m-0">In Progress</h4>
+                        <h4 class="text-white fw-bolder m-0">En cours</h4>
                         @if(isset($project))
                         <button type="button" class="btn btn-light" data-bs-toggle="modal"
                             data-bs-target="#createTaskModal" data-status="in_progress"
@@ -104,7 +104,7 @@
             <div class="col-md-4">
                 <div class="kanban-column">
                     <div class="d-flex justify-content-between shadow-sm align-items-center bg-success px-3 py-2 rounded-top">
-                        <h4 class="text-white fw-bolder m-0">Completed</h4>
+                        <h4 class="text-white fw-bolder m-0">Terminé</h4>
                         @if(isset($project))
                         <button type="button" class="btn btn-light" data-bs-toggle="modal"
                             data-bs-target="#createTaskModal" data-status="completed" style="padding-top: 0.5rem; padding-bottom: 0.5rem;">+</button>
@@ -126,7 +126,7 @@
         </div>
 
         @if(isset($project))
-        <!-- Create Task Modal -->
+        <!-- Modal Création de Tâche -->
         <div class="modal fade" id="createTaskModal" tabindex="-1" aria-labelledby="createTaskModalLabel"
             aria-hidden="true">
             <div class="modal-dialog">
@@ -134,12 +134,12 @@
                     <form action="{{ route('projects.tasks.store', $project->id) }}" method="POST">
                         @csrf
                         <div class="modal-header">
-                            <h5 class="modal-title" id="createTaskModalLabel">Create Task</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <h5 class="modal-title" id="createTaskModalLabel">Créer une tâche</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
                         </div>
                         <div class="modal-body">
                             <div class="mb-3">
-                                <label for="title" class="form-label">Title</label>
+                                <label for="title" class="form-label">Titre</label>
                                 <input type="text" name="title" id="title" class="form-control" required>
                                 @error('title')
                                     <span class="text-danger">{{ $message }}</span>
@@ -153,27 +153,27 @@
                                 @enderror
                             </div>
                             <div class="mb-3">
-                                <label for="due_date" class="form-label">Due Date</label>
+                                <label for="due_date" class="form-label">Date d'échéance</label>
                                 <input type="date" name="due_date" id="due_date" class="form-control">
                                 @error('due_date')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="mb-3">
-                                <label for="priority" class="form-label">Priority</label>
+                                <label for="priority" class="form-label">Priorité</label>
                                 <select name="priority" id="priority" class="form-select" required>
-                                    <option value="low">Low</option>
-                                    <option value="medium">Medium</option>
-                                    <option value="high">High</option>
+                                    <option value="low">Faible</option>
+                                    <option value="medium">Moyenne</option>
+                                    <option value="high">Haute</option>
                                 </select>
                                 @error('priority')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="mb-3">
-                                <label for="user_id" class="form-label">Assign To</label>
+                                <label for="user_id" class="form-label">Assigner à</label>
                                 <select name="user_id" id="user_id" class="form-select">
-                                    <option value="{{auth()->user()->id}}">Self</option>
+                                    <option value="{{auth()->user()->id}}">Moi-même</option>
                                     @foreach ($users as $user)  
                                         <option value="{{$user->id}}">{{$user->name}}</option>
                                     @endforeach
@@ -186,8 +186,8 @@
 
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Create Task</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                            <button type="submit" class="btn btn-primary">Créer la tâche</button>
                         </div>
                     </form>
                 </div>
@@ -260,13 +260,13 @@
                     })
                 }).then(response => {
                     if (!response.ok) {
-                        throw new Error('Failed to update task status');
+                        throw new Error('Échec de la mise à jour du statut de la tâche');
                     }
                     return response.json();
                 }).then(data => {
-                    console.log('Task status updated:', data);
+                    console.log('Statut de la tâche mis à jour:', data);
                 }).catch(error => {
-                    console.error('Error:', error);
+                    console.error('Erreur:', error);
                 });
             }
         });

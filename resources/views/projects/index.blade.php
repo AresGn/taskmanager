@@ -1,12 +1,12 @@
 @extends('layouts.app')
 @section('title')
-    Projects 
+    Projets 
 @endsection
 @section('content')
     <div class="container">
         <div class="d-flex justify-content-between align-items-center bg-white mb-4 shadow-sm p-3 rounded">
-            <h2>Projects</h2>
-            <a href="{{ route('projects.create') }}" class="btn btn-primary">Add Project</a>
+            <h2>Projets</h2>
+            <a href="{{ route('projects.create') }}" class="btn btn-primary">Ajouter un projet</a>
         </div>
 
         @if(session('success'))
@@ -23,12 +23,12 @@
                             <h5 class="card-title">{{ $project->name }}</h5>
                             <p class="card-text">{{ $project->description }}</p>
                             <p class="card-text">
-                                <strong>Status:</strong> {{ $project->status == 'pending' ? 'Pending' : ($project->status == 'on_going' ? 'In Progress' : 'Completed') }}<br>
-                                <strong>Deadline:</strong> 
+                                <strong>Statut:</strong> {{ $project->status == 'pending' ? 'En attente' : ($project->status == 'on_going' ? 'En cours' : 'Terminé') }}<br>
+                                <strong>Échéance:</strong> 
                                 @if($project->end_date && $project->end_date->isFuture())
                                     {{ $project->end_date->diffForHumans() }}
                                 @else
-                                    <span class="text-danger">Deadline Passed</span>
+                                    <span class="text-danger">Échéance dépassée</span>
                                 @endif
                             </p>
                             <a href="{{ route('projects.tasks.index', $project->id) }}" class="btn btn-primary"> <i class="bi bi-list"></i> </a>
@@ -37,7 +37,7 @@
                             <form action="{{ route('projects.destroy', $project->id) }}" method="POST" class="d-inline">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this project?')"> <i class="bi bi-trash"></i> </button>
+                                <button type="submit" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce projet?')"> <i class="bi bi-trash"></i> </button>
                             </form>
                         </div>
                     </div>
