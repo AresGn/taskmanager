@@ -14,16 +14,26 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.css" />
     <link rel="stylesheet" href="{{ asset('assets/custom.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/responsive.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.js"></script>
 
     <style>
         body {
             display: flex;
-            height: 100vh;
+            flex-direction: column;
+            min-height: 100vh;
             margin: 0;
-            overflow: hidden;
             background-color: rgb(241 245 249);
             font-family: "Noto Sans", sans-serif !important; 
+            overflow-x: hidden;
+        }
+
+        @media (min-width: 992px) {
+            body {
+                flex-direction: row;
+                overflow: hidden;
+                height: 100vh;
+            }
         }
 
         .btn {
@@ -32,12 +42,22 @@
         }
 
         .sidebar {
-            width: 250px;
+            width: 100%;
             background-color: #343a40;
             color: white;
-            flex-shrink: 0;
-            display: flex;
-            flex-direction: column;
+            z-index: 1030;
+        }
+
+        @media (min-width: 992px) {
+            .sidebar {
+                width: 250px;
+                flex-shrink: 0;
+                display: flex;
+                flex-direction: column;
+                height: 100vh;
+                position: sticky;
+                top: 0;
+            }
         }
 
         .sidebar .nav-link {
@@ -59,11 +79,34 @@
             margin-right: 10px;
         }
 
+        .sidebar-toggle {
+            display: block;
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            z-index: 1040;
+            background-color: #343a40;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @media (min-width: 992px) {
+            .sidebar-toggle {
+                display: none;
+            }
+        }
+
         .content {
             flex-grow: 1;
             display: flex;
             flex-direction: column;
-            overflow-y: auto;
+            overflow-x: hidden;
         }
 
         .topnav {
@@ -99,13 +142,55 @@
 
         main {
             flex-grow: 1;
+            padding: 15px;
+        }
+
+        @media (max-width: 991.98px) {
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: -100%;
+                height: 100vh;
+                width: 250px;
+                transition: left 0.3s ease;
+                overflow-y: auto;
+            }
+
+            .sidebar.show {
+                left: 0;
+            }
+
+            .sidebar-backdrop {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+                background-color: rgba(0, 0, 0, 0.5);
+                z-index: 1020;
+                display: none;
+            }
+
+            .sidebar-backdrop.show {
+                display: block;
+            }
+        }
+
+        @media (max-width: 576px) {
+            #currentDateTime {
+                font-size: 0.85rem;
+            }
         }
     </style>
 </head>
 
 <body>
-    <div class="sidebar d-flex flex-column p-3">
-        <h4 class="mb-4 text-center">
+    <button class="sidebar-toggle" id="sidebarToggle">
+        <i class="bi bi-list"></i>
+    </button>
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+    <div class="sidebar" id="sidebar">
+        <h4 class="mb-4 text-center p-3">
             <a href="{{ route('dashboard') }}">
                 <img style=" filter: invert(100%) brightness(200%);"
                     src="{{ asset('assets/img/logo-circle-horizontal.png') }}" class="img-fluid" width="100%"
@@ -158,19 +243,14 @@
             </li>
         </ul>
     </div>
-    <div class="content d-flex flex-column">
+    <div class="content">
         <header class="topnav mb-4">
             <nav class="navbar navbar-expand-lg navbar-light">
                 <div class="container-fluid">
                     <a class="navbar-brand" href="{{ route('dashboard') }}">
                         <span class="fw-normal" id="currentDateTime"></span>
                     </a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
-                        aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
+                    <div class="navbar-collapse justify-content-end" id="navbarNavDropdown">
                         <ul class="navbar-nav">
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="notificationDropdown" role="button"
@@ -281,8 +361,47 @@
                     }
                 }
             }
+
+            // Toggle sidebar pour responsive
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            const sidebar = document.getElementById('sidebar');
+            const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+            const navLinks = document.querySelectorAll('.sidebar .nav-link');
+
+            if (sidebarToggle && sidebar) {
+                sidebarToggle.addEventListener('click', function() {
+                    sidebar.classList.toggle('show');
+                    sidebarBackdrop.classList.toggle('show');
+                });
+            }
+
+            if (sidebarBackdrop) {
+                sidebarBackdrop.addEventListener('click', function() {
+                    sidebar.classList.remove('show');
+                    sidebarBackdrop.classList.remove('show');
+                });
+            }
+
+            // Fermer la sidebar quand on clique sur un lien (en mobile)
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    if (window.innerWidth < 992) {
+                        sidebar.classList.remove('show');
+                        sidebarBackdrop.classList.remove('show');
+                    }
+                });
+            });
+
+            // Adapter le layout en cas de redimensionnement de fenêtre
+            window.addEventListener('resize', function() {
+                if (window.innerWidth >= 992) {
+                    sidebar.classList.remove('show');
+                    sidebarBackdrop.classList.remove('show');
+                }
+            });
         });
     </script>
+    @yield('scripts')
 </body>
 
 </html>

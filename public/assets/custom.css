@@ -168,6 +168,21 @@ body.no-animations *::after {
   transform: scale(1.2);
 }
 
+/* Styles responsives pour la sidebar */
+@media (max-width: 991.98px) {
+  .sidebar {
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3) !important;
+  }
+  
+  body.dark-mode .sidebar-backdrop {
+    background-color: rgba(0, 0, 0, 0.7) !important;
+  }
+  
+  body.dark-mode #sidebarToggle {
+    background-color: var(--dark-sidebar) !important;
+  }
+}
+
 /* Cartes améliorées */
 .card {
   border-radius: 12px !important;
@@ -180,6 +195,21 @@ body.no-animations *::after {
 .card:hover {
   transform: translateY(-5px);
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Styles responsives pour les cartes */
+@media (max-width: 767.98px) {
+  .card {
+    margin-bottom: 15px !important;
+  }
+  
+  .card:hover {
+    transform: translateY(-3px);
+  }
+  
+  .row [class*="col-"] {
+    margin-bottom: 15px;
+  }
 }
 
 /* Animation pour les cartes du dashboard */
@@ -422,4 +452,130 @@ main {
 .dropdown-item:hover {
   background-color: rgba(59, 130, 246, 0.1) !important;
   transform: translateX(5px);
+}
+
+/* Styles responsives pour tableaux */
+@media (max-width: 767.98px) {
+  .table-responsive {
+    overflow-x: auto;
+  }
+  
+  .table {
+    min-width: 650px;
+  }
+  
+  .table th,
+  .table td {
+    white-space: nowrap;
+  }
+}
+
+/* Styles responsives pour les modals */
+@media (max-width: 576px) {
+  .modal-dialog {
+    margin: 0.5rem;
+  }
+  
+  .modal-body {
+    padding: 1rem;
+  }
+  
+  .modal-footer {
+    padding: 0.5rem;
+  }
+}
+
+/* Styles responsives pour les formulaires */
+@media (max-width: 576px) {
+  .form-control {
+    font-size: 16px !important; /* Évite le zoom sur iOS */
+  }
+  
+  label {
+    font-size: 0.9rem;
+  }
+  
+  .input-group {
+    margin-bottom: 15px;
+  }
+}
+
+/* Ajustements pour les pages spécifiques */
+@media (max-width: 767.98px) {
+  /* Dashboard responsive */
+  .dashboard-stats-row .col {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+  
+  /* Ajustements des marges et paddings */
+  .container, .container-fluid {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  
+  main {
+    padding: 10px;
+  }
+  
+  h1, .h1 {
+    font-size: 1.8rem;
+  }
+  
+  h2, .h2 {
+    font-size: 1.5rem;
+  }
+  
+  /* Ajustements des boutons sur mobile */
+  .btn-group {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .btn-group .btn {
+    margin-bottom: 5px;
+    flex: 1 0 auto;
+  }
+}
+
+/* Styles spécifiques pour les très petits écrans */
+@media (max-width: 375px) {
+  .container, .container-fluid {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  
+  .card-body {
+    padding: 0.75rem;
+  }
+  
+  .dropdown-menu {
+    width: 240px;
+  }
+}
+
+/* Styles pour l'impression */
+@media print {
+  .sidebar, 
+  .topnav, 
+  .btn, 
+  footer,
+  form button,
+  .no-print {
+    display: none !important;
+  }
+  
+  .content {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  
+  .card {
+    box-shadow: none !important;
+    border: 1px solid #ddd !important;
+  }
+  
+  body {
+    background-color: white !important;
+  }
 } 

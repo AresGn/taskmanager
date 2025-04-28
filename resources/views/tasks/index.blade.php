@@ -13,10 +13,11 @@
             padding: 10px;
             border-radius: 5px;
             height: 100%;
+            margin-bottom: 20px;
         }
 
         .kanban-list {
-            min-height: 500px;
+            min-height: 300px;
             background-color: #e9ecef;
             border-radius: 5px;
             padding: 10px;
@@ -28,6 +29,59 @@
 
         .kanban-item.invisible {
             opacity: 0.4;
+        }
+
+        /* Styles responsives pour le Kanban */
+        @media (max-width: 991.98px) {
+            .kanban-tabs {
+                display: flex;
+                margin-bottom: 15px;
+                overflow-x: auto;
+                border-bottom: 1px solid #dee2e6;
+            }
+            
+            .kanban-tab {
+                padding: 8px 15px;
+                cursor: pointer;
+                border: 1px solid transparent;
+                border-top-left-radius: 0.25rem;
+                border-top-right-radius: 0.25rem;
+                margin-right: 5px;
+                font-weight: 500;
+                white-space: nowrap;
+            }
+            
+            .kanban-tab.active {
+                background-color: #fff;
+                border-color: #dee2e6 #dee2e6 #fff;
+            }
+            
+            .kanban-tab-content {
+                display: none;
+            }
+            
+            .kanban-tab-content.active {
+                display: block;
+            }
+            
+            .kanban-list {
+                min-height: 400px;
+            }
+        }
+        
+        @media (min-width: 992px) {
+            .kanban-tabs {
+                display: none;
+            }
+            
+            .kanban-tab-content {
+                display: block !important;
+            }
+        }
+
+        /* Empêcher les débordements de texte dans les cartes */
+        .card-title, .card-text {
+            word-break: break-word;
         }
     </style>
     <div class="container">
@@ -47,8 +101,21 @@
             </div>
         @endif
 
+        <!-- Tabs pour mobile/tablet -->
+        <div class="kanban-tabs d-lg-none">
+            <div class="kanban-tab active" data-target="tab-to-do">
+                À faire <span class="badge bg-primary ms-1">{{ count($tasks['to_do'] ?? []) }}</span>
+            </div>
+            <div class="kanban-tab" data-target="tab-in-progress">
+                En cours <span class="badge bg-warning ms-1">{{ count($tasks['in_progress'] ?? []) }}</span>
+            </div>
+            <div class="kanban-tab" data-target="tab-completed">
+                Terminé <span class="badge bg-success ms-1">{{ count($tasks['completed'] ?? []) }}</span>
+            </div>
+        </div>
+
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-lg-4 kanban-tab-content active" id="tab-to-do">
                 <div class="kanban-column">
                     <div class="d-flex justify-content-between bg-primary text-white shadow-sm align-items-center px-3 py-2 rounded-top">
                         <h4 class="text-white fw-bolder m-0">À faire</h4>
@@ -67,7 +134,7 @@
                                         <span style="font-size: 12px;" class="badge {{ $task->priority == 'low' ? 'bg-success' : ($task->priority == 'medium' ? 'bg-warning' : 'bg-danger') }}">{{ $task->priority == 'low' ? 'Faible' : ($task->priority == 'medium' ? 'Moyenne' : 'Haute') }}</span>
                                     </h5>
                                     
-                                    <p class="card-text">{{ $task->description }}</p>
+                                    <p class="card-text">{{ Str::limit($task->description, 100) }}</p>
                                     <a href="{{ route('tasks.show', $task->id) }}" class="btn btn-primary btn-sm"><i class="bi bi-eye"></i></a>
                                 </div>
                             </div>
@@ -76,7 +143,7 @@
                 </div>
             </div>
 
-            <div class="col-md-4">
+            <div class="col-lg-4 kanban-tab-content" id="tab-in-progress">
                 <div class="kanban-column">
                     <div class="d-flex justify-content-between shadow-sm align-items-center bg-warning px-3 py-2 rounded-top">
                         <h4 class="text-white fw-bolder m-0">En cours</h4>
@@ -91,8 +158,11 @@
                         @foreach ($tasks['in_progress'] ?? [] as $task)
                             <div class="card mb-3 kanban-item" data-id="{{ $task->id }}" draggable="true">
                                 <div class="card-body">
-                                    <h5 class="card-title">{{ $task->title }}</h5>
-                                    <p class="card-text">{{ $task->description }}</p>
+                                    <h5 class="card-title">
+                                        {{ $task->title }}
+                                        <span style="font-size: 12px;" class="badge {{ $task->priority == 'low' ? 'bg-success' : ($task->priority == 'medium' ? 'bg-warning' : 'bg-danger') }}">{{ $task->priority == 'low' ? 'Faible' : ($task->priority == 'medium' ? 'Moyenne' : 'Haute') }}</span>
+                                    </h5>
+                                    <p class="card-text">{{ Str::limit($task->description, 100) }}</p>
                                     <a href="{{ route('tasks.show', $task->id) }}" class="btn btn-warning btn-sm"><i class="bi bi-eye"></i></a>
                                 </div>
                             </div>
@@ -101,7 +171,7 @@
                 </div>
             </div>
 
-            <div class="col-md-4">
+            <div class="col-lg-4 kanban-tab-content" id="tab-completed">
                 <div class="kanban-column">
                     <div class="d-flex justify-content-between shadow-sm align-items-center bg-success px-3 py-2 rounded-top">
                         <h4 class="text-white fw-bolder m-0">Terminé</h4>
@@ -114,8 +184,11 @@
                         @foreach ($tasks['completed'] ?? [] as $task)
                             <div class="card mb-3 kanban-item" data-id="{{ $task->id }}" draggable="true">
                                 <div class="card-body">
-                                    <h5 class="card-title">{{ $task->title }}</h5>
-                                    <p class="card-text">{{ $task->description }}</p>
+                                    <h5 class="card-title">
+                                        {{ $task->title }}
+                                        <span style="font-size: 12px;" class="badge {{ $task->priority == 'low' ? 'bg-success' : ($task->priority == 'medium' ? 'bg-warning' : 'bg-danger') }}">{{ $task->priority == 'low' ? 'Faible' : ($task->priority == 'medium' ? 'Moyenne' : 'Haute') }}</span>
+                                    </h5>
+                                    <p class="card-text">{{ Str::limit($task->description, 100) }}</p>
                                     <a href="{{ route('tasks.show', $task->id) }}" class="btn btn-success btn-sm"><i class="bi bi-eye"></i></a>
                                 </div>
                             </div>
@@ -201,6 +274,27 @@
             const kanbanItems = document.querySelectorAll('.kanban-item');
             const kanbanLists = document.querySelectorAll('.kanban-list');
             const createTaskModal = document.getElementById('createTaskModal');
+            
+            // Gestion des onglets sur mobile/tablet
+            const kanbanTabs = document.querySelectorAll('.kanban-tab');
+            const kanbanTabContents = document.querySelectorAll('.kanban-tab-content');
+            
+            kanbanTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // Retirer la classe active de tous les onglets
+                    kanbanTabs.forEach(t => t.classList.remove('active'));
+                    // Ajouter la classe active à l'onglet cliqué
+                    this.classList.add('active');
+                    
+                    // Masquer tous les contenus d'onglets
+                    kanbanTabContents.forEach(content => content.classList.remove('active'));
+                    
+                    // Afficher le contenu correspondant à l'onglet
+                    const targetId = this.getAttribute('data-target');
+                    document.getElementById(targetId).classList.add('active');
+                });
+            });
+            
             if (createTaskModal) {
                 const taskStatusInput = document.getElementById('task_status');
 
@@ -248,25 +342,28 @@
                 updateTaskStatus(id, status);
             }
 
-            function updateTaskStatus(id, status) {
-                fetch(`/tasks/${id}/update-status`, {
+            function updateTaskStatus(taskId, status) {
+                fetch(`/tasks/${taskId}/update-status`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                     },
-                    body: JSON.stringify({
-                        status
-                    })
-                }).then(response => {
+                    body: JSON.stringify({ status: status })
+                })
+                .then(response => {
                     if (!response.ok) {
-                        throw new Error('Échec de la mise à jour du statut de la tâche');
+                        throw new Error('Erreur lors de la mise à jour du statut');
                     }
                     return response.json();
-                }).then(data => {
-                    console.log('Statut de la tâche mis à jour:', data);
-                }).catch(error => {
+                })
+                .then(data => {
+                    console.log('Statut mis à jour avec succès');
+                    // Optionnel: notification ou autre action après mise à jour réussie
+                })
+                .catch(error => {
                     console.error('Erreur:', error);
+                    // Optionnel: notification d'erreur ou autre action
                 });
             }
         });
