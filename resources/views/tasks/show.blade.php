@@ -429,10 +429,40 @@
                                 this.querySelector('i').classList.replace('bi-check-circle', 'bi-x-circle');
                                 this.innerHTML = '<i class="bi bi-x-circle"></i> Marquer comme non terminée';
                                 document.querySelector('p.card-text strong:contains("Status:")').nextElementSibling.innerHTML = '<span class="badge bg-success">Completed</span>';
+                                
+                                // Afficher l'animation de confetti lorsqu'une tâche est marquée comme terminée
+                                if (typeof window.showConfetti === 'function') {
+                                    window.showConfetti();
+                                }
+                                
+                                // Afficher un message de félicitations
+                                if (typeof window.showSuccessMessage === 'function') {
+                                    window.showSuccessMessage('Félicitations! Tâche terminée avec succès!');
+                                }
+                                
+                                // Ajouter l'icône avec l'animation de complétion
+                                const icon = document.createElement('i');
+                                icon.className = 'bi bi-check-circle-fill task-completed-icon';
+                                icon.style.color = 'var(--success)';
+                                icon.style.fontSize = '2rem';
+                                icon.style.position = 'absolute';
+                                icon.style.top = '50%';
+                                icon.style.left = '50%';
+                                icon.style.transform = 'translate(-50%, -50%)';
+                                icon.style.zIndex = '1000';
+                                
+                                document.body.appendChild(icon);
+                                
+                                // Supprimer l'icône après l'animation
+                                setTimeout(() => {
+                                    icon.remove();
+                                }, 2000);
                             }
                             
                             // Recharger la page pour refléter tous les changements
-                            location.reload();
+                            setTimeout(() => {
+                                location.reload();
+                            }, 1500);
                         } else {
                             alert('Une erreur est survenue lors de la mise à jour du statut de la tâche.');
                         }
@@ -445,4 +475,7 @@
             }
         });
     </script>
+    
+    <!-- Conteneur pour l'effet confetti -->
+    <div class="confetti-container"></div>
 @endsection

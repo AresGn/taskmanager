@@ -9,7 +9,7 @@
         
         <div class="row mb-4">
             <div class="col-md-3 mb-4">
-                <div class="card shadow-sm h-100">
+                <div class="card shadow-sm h-100 dashboard-card">
                     <div class="card-body d-flex flex-column">
                         <h5 class="card-title">Tâches</h5>
                         <p class="card-text flex-grow-1">Vous avez <strong>{{ $tasksCount }}</strong> tâches en attente.</p>
@@ -18,7 +18,7 @@
                 </div>
             </div>
             <div class="col-md-3 mb-4">
-                <div class="card shadow-sm h-100">
+                <div class="card shadow-sm h-100 dashboard-card">
                     <div class="card-body d-flex flex-column">
                         <h5 class="card-title">Routines</h5>
                         <p class="card-text flex-grow-1">Vous avez <strong>{{ $routinesCount }}</strong> routines programmées aujourd'hui.</p>
@@ -27,7 +27,7 @@
                 </div>
             </div>
             <div class="col-md-3 mb-4">
-                <div class="card shadow-sm h-100">
+                <div class="card shadow-sm h-100 dashboard-card">
                     <div class="card-body d-flex flex-column">
                         <h5 class="card-title">Notes</h5>
                         <p class="card-text flex-grow-1">Vous avez <strong>{{ $notesCount }}</strong> notes enregistrées.</p>
@@ -36,7 +36,7 @@
                 </div>
             </div>
             <div class="col-md-3 mb-4">
-                <div class="card shadow-sm h-100">
+                <div class="card shadow-sm h-100 dashboard-card">
                     <div class="card-body d-flex flex-column">
                         <h5 class="card-title">Fichiers</h5>
                         <p class="card-text flex-grow-1">Vous avez <strong>{{ $filesCount }}</strong> fichiers.</p>
@@ -103,7 +103,7 @@
                                 @endphp
                                 <li class="list-group-item d-flex justify-content-between align-items-center {{ $reminderDate->isToday() ? 'bg-warning' : ($reminderDate->isPast() ? 'bg-danger' : 'bg-success') }}">
                                     {{ $reminder->title }}
-                                    <span class="badge bg-primary rounded-pill">{{ $reminderDate->format('M d') }} {{ $reminderTime }}</span>
+                                    <span class="badge bg-primary rounded-pill notification-badge">{{ $reminderDate->format('M d') }} {{ $reminderTime }}</span>
                                 </li>
                             @endforeach
                         </ul>
@@ -112,4 +112,7 @@
             </div>
         </div>
     </div>
+
+    <!-- Conteneur pour l'effet confetti -->
+    <div class="confetti-container"></div>
 @endsection
