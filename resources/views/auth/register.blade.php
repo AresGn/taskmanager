@@ -357,38 +357,38 @@
                 </div>
                 
                 <form method="POST" action="{{ route('register') }}" class="mb-4">
-                    @csrf
+                        @csrf
                     <div class="mb-4">
-                        <label for="name" class="form-label">Nom complet</label>
-                        <input type="text" name="name" id="name" class="form-control" value="{{ old('name') }}" required autofocus>
-                        @error('name')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
+                            <label for="name" class="form-label">Nom complet</label>
+                            <input type="text" name="name" id="name" class="form-control" value="{{ old('name') }}" required autofocus>
+                            @error('name')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
                     <div class="mb-4">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" name="email" id="email" class="form-control" value="{{ old('email') }}" required>
-                        @error('email')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" name="email" id="email" class="form-control" value="{{ old('email') }}" required>
+                            @error('email')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
                     <div class="mb-4">
-                        <label for="password" class="form-label">Mot de passe</label>
-                        <input type="password" name="password" id="password" class="form-control" required>
-                        @error('password')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
+                            <label for="password" class="form-label">Mot de passe</label>
+                            <input type="password" name="password" id="password" class="form-control" required>
+                            @error('password')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
                     <div class="mb-4">
-                        <label for="password_confirmation" class="form-label">Confirmer le mot de passe</label>
-                        <input type="password" name="password_confirmation" id="password_confirmation" class="form-control" required>
-                    </div>
-                    <div class="d-grid mb-4">
-                        <button type="submit" class="btn btn-primary">S'inscrire</button>
-                    </div>
+                            <label for="password_confirmation" class="form-label">Confirmer le mot de passe</label>
+                            <input type="password" name="password_confirmation" id="password_confirmation" class="form-control" required>
+                        </div>
+                        <div class="d-grid mb-4">
+                            <button type="submit" class="btn btn-primary">S'inscrire</button>
+                        </div>
                 </form>
                 
-                <div class="text-center">
+                        <div class="text-center">
                     <p>Vous avez déjà un compte ? <a href="{{ route('login') }}" class="text-decoration-none text-primary">Se connecter</a></p>
                     <p class="text-muted mt-5">&copy; {{ date('Y') }} Gestionnaire de Tâches</p>
                 </div>
@@ -476,15 +476,15 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <p class="text-center mt-4 fw-light" style="opacity: 0.8">
                     <i class="bi bi-arrow-left-right me-1"></i> Utilisez le glisser-déposer pour déplacer vos tâches entre les statuts
                 </p>
-            </div>
         </div>
     </div>
+</div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Animation des barres de progression

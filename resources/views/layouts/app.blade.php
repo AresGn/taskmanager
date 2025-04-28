@@ -201,11 +201,15 @@
                                     {{ Auth::user()->name }}
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                                    <li><a class="dropdown-item" href="#">Paramètres</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('settings') }}">
+                                        <i class="bi bi-gear me-2"></i>Paramètres
+                                    </a></li>
                                     <li>
                                         <form method="POST" action="{{ route('logout') }}" id="logout-form">
                                             @csrf
-                                            <button type="submit" class="dropdown-item">Déconnexion</button>
+                                            <button type="submit" class="dropdown-item">
+                                                <i class="bi bi-box-arrow-right me-2"></i>Déconnexion
+                                            </button>
                                         </form>
                                     </li>
                                 </ul>
@@ -240,6 +244,44 @@
 
         updateDateTime();
         setInterval(updateDateTime, 1000);
+        
+        // Code pour appliquer les paramètres d'apparence sur toutes les pages
+        document.addEventListener('DOMContentLoaded', function() {
+            // Charger les préférences d'apparence sauvegardées dans le localStorage
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            const savedPrimaryColor = localStorage.getItem('primaryColor') || '#3b82f6';
+            const savedSidebarColor = localStorage.getItem('sidebarColor') || '#1e293b';
+            const animationsEnabled = localStorage.getItem('animationsEnabled') !== 'false';
+            
+            // Appliquer le thème
+            applyTheme(savedTheme);
+            
+            // Appliquer les couleurs personnalisées
+            document.documentElement.style.setProperty('--primary', savedPrimaryColor);
+            document.documentElement.style.setProperty('--sidebar-bg', savedSidebarColor);
+            
+            // Appliquer les paramètres d'animation
+            if (!animationsEnabled) {
+                document.body.classList.add('no-animations');
+            }
+            
+            // Fonction pour appliquer le thème
+            function applyTheme(theme) {
+                if (theme === 'dark') {
+                    document.body.classList.add('dark-mode');
+                } else if (theme === 'light') {
+                    document.body.classList.remove('dark-mode');
+                } else if (theme === 'system') {
+                    // Détecter les préférences du système
+                    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                    if (prefersDark) {
+                        document.body.classList.add('dark-mode');
+                    } else {
+                        document.body.classList.remove('dark-mode');
+                    }
+                }
+            }
+        });
     </script>
 </body>
 

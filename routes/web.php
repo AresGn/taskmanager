@@ -45,6 +45,12 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('reminders', ReminderController::class);
     Route::resource('checklist-items', ChecklistItemController::class);
     Route::get('checklist-items/{checklistItem}/update-status', [ChecklistItemController::class, 'updateStatus'])->name('checklist-items.update-status');
+    
+    // Route pour la page de paramètres
+    Route::get('/settings', function () {
+        return view('settings');
+    })->name('settings');
+    
     Route::get('/', function () {
         $user = Auth::user();
         $tasksCount = $user->tasks()->count();

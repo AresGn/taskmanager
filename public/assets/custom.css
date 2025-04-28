@@ -13,6 +13,14 @@
   --text-dark: #1e293b;
   --text-muted: #64748b;
   --card-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.05);
+  
+  /* Variables pour le thème sombre */
+  --dark-bg: #1e1e2d;
+  --dark-card-bg: #2a2a3c;
+  --dark-text: #f1f5f9;
+  --dark-border: #3f4254;
+  --dark-sidebar: #151521;
+  --dark-card-shadow: 0 4px 6px -1px rgba(0,0,0,0.2), 0 2px 4px -2px rgba(0,0,0,0.15);
 }
 
 /* Styles généraux */
@@ -20,6 +28,76 @@ body {
   background-color: var(--bg-light) !important;
   font-family: "Noto Sans", sans-serif !important;
   transition: all 0.3s ease;
+}
+
+/* Styles pour le mode sombre */
+body.dark-mode {
+  background-color: var(--dark-bg) !important;
+  color: var(--dark-text) !important;
+}
+
+body.dark-mode .card,
+body.dark-mode .dropdown-menu,
+body.dark-mode .list-group-item,
+body.dark-mode .topnav {
+  background-color: var(--dark-card-bg) !important;
+  color: var(--dark-text) !important;
+}
+
+body.dark-mode .card-header {
+  background-color: var(--dark-card-bg) !important;
+  border-bottom-color: var(--dark-border) !important;
+}
+
+body.dark-mode .text-muted {
+  color: #a0aec0 !important;
+}
+
+body.dark-mode .form-control {
+  background-color: var(--dark-bg) !important;
+  border-color: var(--dark-border) !important;
+  color: var(--dark-text) !important;
+}
+
+body.dark-mode .form-control:focus {
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3) !important;
+}
+
+body.dark-mode .sidebar {
+  background-color: var(--dark-sidebar) !important;
+}
+
+body.dark-mode .dropdown-item {
+  color: var(--dark-text) !important;
+}
+
+body.dark-mode .dropdown-item:hover {
+  background-color: rgba(59, 130, 246, 0.2) !important;
+}
+
+body.dark-mode hr {
+  border-color: var(--dark-border) !important;
+}
+
+body.dark-mode table {
+  color: var(--dark-text) !important;
+}
+
+body.dark-mode .table-striped tbody tr:nth-of-type(odd) {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+body.dark-mode .modal-content {
+  background-color: var(--dark-card-bg) !important;
+  color: var(--dark-text) !important;
+}
+
+/* Désactiver les animations */
+body.no-animations *,
+body.no-animations *::before,
+body.no-animations *::after {
+  animation: none !important;
+  transition: none !important;
 }
 
 /* Boutons améliorés */

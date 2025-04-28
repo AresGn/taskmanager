@@ -226,31 +226,31 @@
                 </div>
                 
                 <form method="POST" action="{{ route('login') }}" class="mb-4">
-                    @csrf
+                        @csrf
                     <div class="mb-4">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" name="email" id="email" class="form-control" placeholder="admin@example.com" required autofocus>
-                        @error('email')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" name="email" id="email" class="form-control" placeholder="admin@example.com" required autofocus>
+                            @error('email')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
                     <div class="mb-4">
-                        <label for="password" class="form-label">Mot de passe</label>
-                        <input type="password" name="password" id="password" class="form-control" required>
-                        @error('password')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
+                            <label for="password" class="form-label">Mot de passe</label>
+                            <input type="password" name="password" id="password" class="form-control" required>
+                            @error('password')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
                     <div class="mb-4 form-check">
-                        <input type="checkbox" name="remember" id="remember" class="form-check-input">
-                        <label for="remember" class="form-check-label">Se souvenir de moi</label>
-                    </div>
-                    <div class="d-grid mb-4">
-                        <button type="submit" class="btn btn-primary">Se connecter</button>
-                    </div>
+                            <input type="checkbox" name="remember" id="remember" class="form-check-input">
+                            <label for="remember" class="form-check-label">Se souvenir de moi</label>
+                        </div>
+                        <div class="d-grid mb-4">
+                            <button type="submit" class="btn btn-primary">Se connecter</button>
+                        </div>
                 </form>
                 
-                <div class="text-center">
+                        <div class="text-center">
                     <p>Vous n'avez pas de compte ? <a href="{{ route('register') }}" class="text-decoration-none text-primary">Créer un compte</a></p>
                     <p class="text-muted mt-5">&copy; {{ date('Y') }} Gestionnaire de Tâches</p>
                 </div>
@@ -285,8 +285,8 @@
                         </div>
                         <h3>Projets organisés</h3>
                         <p class="feature-description">Regroupez vos tâches dans des projets pour une meilleure organisation et visualisez votre progression en temps réel.</p>
-                    </div>
-                    
+                </div>
+
                     <div class="feature-slide" data-index="3">
                         <div class="feature-icon">
                             <i class="bi bi-bell"></i>
@@ -295,18 +295,18 @@
                         <p class="feature-description">Configurez des rappels pour ne jamais manquer une tâche importante ou une échéance cruciale.</p>
                     </div>
                 </div>
-                
+
                 <div class="slider-dots">
                     <div class="dot active" data-index="0"></div>
                     <div class="dot" data-index="1"></div>
                     <div class="dot" data-index="2"></div>
                     <div class="dot" data-index="3"></div>
-                </div>
             </div>
         </div>
     </div>
+</div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Slider functionality
