@@ -1,6 +1,9 @@
 <?php
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\VerificationController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\ChecklistItemController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\MailController;
@@ -20,7 +23,18 @@ Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('register', [RegisterController::class, 'register']);
 
-Route::middleware(['auth'])->group(function () {
+// Routes de vérification d'email
+Route::get('/email/verify', [VerificationController::class, 'show'])->middleware(['auth'])->name('verification.notice');
+Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->middleware(['auth', 'signed'])->name('verification.verify');
+Route::post('/email/verification-notification', [VerificationController::class, 'resend'])->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+
+// Routes de récupération de mot de passe
+Route::get('password/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
+Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+Route::get('password/reset/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
+Route::post('password/reset', [ResetPasswordController::class, 'reset'])->name('password.update');
+
+Route::middleware(['auth', 'verified'])->group(function () {
     Route::controller(MailController::class)->prefix('mail')->name('mail.')->group(function () {
         Route::get('/', 'index')->name('inbox');
     });

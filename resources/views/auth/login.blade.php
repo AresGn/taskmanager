@@ -252,6 +252,7 @@
                 
                         <div class="text-center">
                     <p>Vous n'avez pas de compte ? <a href="{{ route('register') }}" class="text-decoration-none text-primary">Créer un compte</a></p>
+                    <p><a href="{{ route('password.request') }}" class="text-decoration-none text-primary">Mot de passe oublié ?</a></p>
                     <p class="text-muted mt-5">&copy; {{ date('Y') }} Gestionnaire de Tâches</p>
                 </div>
             </div>

@@ -185,9 +185,11 @@
 </head>
 
 <body>
+    @if(Auth::check())
     <button class="sidebar-toggle" id="sidebarToggle">
         <i class="bi bi-list"></i>
     </button>
+    @endif
     <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
     <div class="sidebar" id="sidebar">
         <h4 class="mb-4 text-center p-3">
@@ -197,6 +199,7 @@
                     alt="gestionnaire de tâches">
             </a>
         </h4>
+        @if(Auth::check())
         <ul class="nav flex-column">
             <li class="nav-item">
                 <a class="nav-link {{ request()->is('/') ? 'active' : '' }}" href="{{ route('dashboard') }}">
@@ -242,6 +245,20 @@
                 </a>
             </li>
         </ul>
+        @else
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('login') }}">
+                    <i class="bi bi-box-arrow-in-right"></i> Connexion
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('register') }}">
+                    <i class="bi bi-person-plus"></i> Inscription
+                </a>
+            </li>
+        </ul>
+        @endif
     </div>
     <div class="content">
         <header class="topnav mb-4">
@@ -257,41 +274,62 @@
                                     data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="bi bi-bell"></i>
                                     <span class="badge rounded-pill bg-danger">
-                                        {{ Auth::user()->tasks()->where('status', '!=', 'completed')->count() }}
+                                        @if(Auth::check())
+                                            {{ Auth::user()->tasks()->where('status', '!=', 'completed')->count() }}
+                                        @else
+                                            0
+                                        @endif
                                     </span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationDropdown">
                                     <li class="dropdown-header">Tâches non terminées</li>
-                                    @forelse (Auth::user()->tasks()->where('status', '!=', 'completed')->get() as $task)
-                                        <li>
-                                            <a class="dropdown-item" href="{{ route('tasks.show', $task->id) }}">
-                                                <span class="fw-bold">{{ Str::limit($task->title, 30) }}</span>
-                                                <br>
-                                                <small class="text-muted">Échéance: {{ $task->due_date ?: 'Non définie' }}</small>
-                                            </a>
-                                        </li>
-                                    @empty
+                                    @if(Auth::check())
+                                        @forelse (Auth::user()->tasks()->where('status', '!=', 'completed')->get() as $task)
+                                            <li>
+                                                <a class="dropdown-item" href="{{ route('tasks.show', $task->id) }}">
+                                                    <span class="fw-bold">{{ Str::limit($task->title, 30) }}</span>
+                                                    <br>
+                                                    <small class="text-muted">Échéance: {{ $task->due_date ?: 'Non définie' }}</small>
+                                                </a>
+                                            </li>
+                                        @empty
+                                            <li><span class="dropdown-item">Aucune tâche en attente</span></li>
+                                        @endforelse
+                                    @else
                                         <li><span class="dropdown-item">Aucune tâche en attente</span></li>
-                                    @endforelse
+                                    @endif
                                 </ul>
                             </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                     data-bs-toggle="dropdown" aria-expanded="false">
-                                    {{ Auth::user()->name }}
+                                    @if(Auth::check())
+                                        {{ Auth::user()->name }}
+                                    @else
+                                        Compte
+                                    @endif
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                                    <li><a class="dropdown-item" href="{{ route('settings') }}">
-                                        <i class="bi bi-gear me-2"></i>Paramètres
-                                    </a></li>
-                                    <li>
-                                        <form method="POST" action="{{ route('logout') }}" id="logout-form">
-                                            @csrf
-                                            <button type="submit" class="dropdown-item">
-                                                <i class="bi bi-box-arrow-right me-2"></i>Déconnexion
-                                            </button>
-                                        </form>
-                                    </li>
+                                    @if(Auth::check())
+                                        <li><a class="dropdown-item" href="{{ route('settings') }}">
+                                            <i class="bi bi-gear me-2"></i>Paramètres
+                                        </a></li>
+                                        <li>
+                                            <form method="POST" action="{{ route('logout') }}" id="logout-form">
+                                                @csrf
+                                                <button type="submit" class="dropdown-item">
+                                                    <i class="bi bi-box-arrow-right me-2"></i>Déconnexion
+                                                </button>
+                                            </form>
+                                        </li>
+                                    @else
+                                        <li><a class="dropdown-item" href="{{ route('login') }}">
+                                            <i class="bi bi-box-arrow-in-right me-2"></i>Connexion
+                                        </a></li>
+                                        <li><a class="dropdown-item" href="{{ route('register') }}">
+                                            <i class="bi bi-person-plus me-2"></i>Inscription
+                                        </a></li>
+                                    @endif
                                 </ul>
                             </li>
                         </ul>
