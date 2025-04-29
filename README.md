@@ -1,8 +1,6 @@
 # Task Manager
 
-<p align="center">
-  <img src="https://github.com/arafat-web/Task-Manager/assets/26932301/d5f6a26e-32d1-44dc-aee5-9548a44506ae" alt="Task Manager Logo">
-</p>
+
 
 ## Description du Projet
 
@@ -71,7 +69,7 @@ Task-Manager/
 ### 1. Cloner le Projet
 
 ```bash
-git clone https://github.com/votre-utilisateur/Task-Manager.git
+git clone https://github.com/AresGn/taskmanager.git
 cd Task-Manager
 ```
 
@@ -117,7 +115,7 @@ Accédez à l'application dans votre navigateur: http://localhost:8000
 
 Si vous préférez utiliser un dump SQL au lieu des migrations:
 
-1. Créez une base de données vide dans MySQL
+1. Créez une base de données vide dans MySQL 
 2. Importez le fichier SQL via phpMyAdmin:
    - Accédez à phpMyAdmin
    - Sélectionnez votre base de données
